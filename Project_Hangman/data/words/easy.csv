@@ -1,0 +1,51 @@
+﻿word,hint,category
+APPLE,A fruit that can be red or green,Food
+BANANA,A long yellow fruit,Food
+MANGO,A sweet tropical fruit,Food
+ORANGE,A round citrus fruit,Food
+GRAPE,A small fruit used to make juice,Food
+PIZZA,A baked dish with cheese and toppings,Food
+BREAD,A common baked food,Food
+CAKE,A sweet baked dessert,Food
+RICE,A common grain served with meals,Food
+EGG,A food that comes from a chicken,Food
+TIGER,A large striped wild cat,Animals
+LION,A big cat known as the king of the jungle,Animals
+BEAR,A large furry animal,Animals
+HORSE,An animal people can ride,Animals
+SHEEP,A farm animal with wool,Animals
+MOUSE,A small animal with a long tail,Animals
+FROG,An animal that can jump and lives near water,Animals
+FISH,An animal that lives in water,Animals
+BIRD,An animal with feathers and wings,Animals
+DUCK,A water bird that says quack,Animals
+HOUSE,A place where people live,Places
+SCHOOL,A place where students learn,Places
+PARK,A public green area,Places
+BEACH,A sandy place beside the sea,Places
+SHOP,A place where people buy things,Places
+HOTEL,A place where travelers stay,Places
+FARM,A place where crops or animals are raised,Places
+BANK,A place that handles money,Places
+MARKET,A place where many goods are sold,Places
+GARDEN,A place where plants are grown,Places
+BOOK,Something you read,Objects
+CHAIR,Furniture you sit on,Objects
+TABLE,Furniture with a flat top,Objects
+PHONE,A device used for calls,Objects
+CLOCK,An object that shows time,Objects
+PENCIL,A tool used for writing,Objects
+BAG,Something used to carry things,Objects
+SHOE,Something worn on a foot,Objects
+BALL,A round object used in many sports,Objects
+KEY,An object used to open a lock,Objects
+HAPPY,Feeling good or joyful,Adjectives
+SMALL,Not large in size,Adjectives
+FAST,Moving quickly,Adjectives
+COLD,Having a low temperature,Adjectives
+BRIGHT,Giving off lots of light,Adjectives
+CLEAN,Not dirty,Adjectives
+QUIET,Making little noise,Adjectives
+STRONG,Having a lot of power,Adjectives
+KIND,Being nice to others,Adjectives
+YOUNG,Not old,Adjectives

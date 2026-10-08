@@ -1,0 +1,51 @@
+﻿word,hint,category
+COMPUTER,An electronic machine used to process information,Technology
+KEYBOARD,A device used to type,Technology
+MONITOR,A screen that displays information,Technology
+INTERNET,A worldwide network connecting computers,Technology
+SOFTWARE,Programs that run on a computer,Technology
+DATABASE,An organized collection of data,Technology
+PRINTER,A device that puts digital documents on paper,Technology
+NETWORK,Connected computers that communicate,Technology
+PASSWORD,A secret string used for access,Technology
+BROWSER,Software used to visit websites,Technology
+BASKETBALL,A sport played with a ball and hoop,Sports
+FOOTBALL,A sport played with a ball and goals,Sports
+TENNIS,A racket sport played over a net,Sports
+VOLLEYBALL,A team sport played over a high net,Sports
+SWIMMING,Moving through water as a sport,Sports
+RUNNING,Moving quickly on foot,Sports
+CYCLING,Riding a bicycle as a sport,Sports
+BADMINTON,A racket sport using a shuttlecock,Sports
+BASEBALL,A bat-and-ball team sport,Sports
+BOXING,A combat sport using punches,Sports
+ELEPHANT,A very large animal with a trunk,Animals
+GIRAFFE,A tall animal with a long neck,Animals
+DOLPHIN,A highly intelligent marine mammal,Animals
+PENGUIN,A flightless bird that swims,Animals
+CROCODILE,A large reptile with strong jaws,Animals
+KANGAROO,An Australian animal that hops,Animals
+OCTOPUS,A sea animal with eight arms,Animals
+BUTTERFLY,An insect with colorful wings,Animals
+CHEETAH,A very fast big cat,Animals
+GORILLA,A large powerful ape,Animals
+NOTEBOOK,A book used for writing notes,Objects
+BACKPACK,A bag carried on the back,Objects
+UMBRELLA,An object used to keep rain away,Objects
+CAMERA,A device used to take pictures,Objects
+BICYCLE,A two-wheeled vehicle powered by pedals,Objects
+TELEVISION,A device for watching programs,Objects
+HEADPHONES,A device worn over the ears for sound,Objects
+MICROWAVE,An appliance used to heat food,Objects
+SCISSORS,A tool used for cutting,Objects
+FLASHLIGHT,A portable light,Objects
+ADVENTURE,An exciting or unusual experience,General
+LANGUAGE,A system people use to communicate,General
+MOUNTAIN,A very high natural elevation,Nature
+RAINBOW,A colorful arc seen after rain,Nature
+SUNLIGHT,Light that comes from the sun,Nature
+THUNDER,A loud sound during a storm,Nature
+VOLCANO,A mountain that can release lava,Nature
+DESERT,A very dry area with little rain,Nature
+OCEAN,A very large body of salt water,Nature
+FOREST,A large area filled with trees,Nature
