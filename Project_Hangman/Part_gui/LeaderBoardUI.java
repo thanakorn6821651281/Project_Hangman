@@ -2,20 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package project_hangman;
+package Part_gui;
 
 /**
  *
  * @author TUF
  */
-public class LeaderBoard extends javax.swing.JFrame {
+public class LeaderBoardUI extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LeaderBoard.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LeaderBoardUI.class.getName());
 
     /**
      * Creates new form LeaderBoard
      */
-    public LeaderBoard() {
+    public LeaderBoardUI() {
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -93,7 +93,7 @@ public class LeaderBoard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       Home back = new Home();
+       HomeUI back = new HomeUI();
        back.setVisible(true);
        this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -120,7 +120,7 @@ public class LeaderBoard extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new LeaderBoard().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new LeaderBoardUI().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

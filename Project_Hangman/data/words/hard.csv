@@ -1,0 +1,51 @@
+﻿word,hint,category
+PROGRAMMING,Writing instructions that a computer can execute,Technology
+ALGORITHM,A step-by-step method for solving a problem,Technology
+ENCAPSULATION,An OOP concept that hides internal data,Programming
+POLYMORPHISM,An OOP concept meaning many forms,Programming
+INHERITANCE,An OOP mechanism for deriving a class from another,Programming
+ABSTRACTION,Showing essential features while hiding details,Programming
+INTERFACE,A contract of methods a class can implement,Programming
+RECURSION,A function calling itself,Programming
+COMPILATION,Converting source code into another form for execution,Programming
+DEBUGGING,Finding and fixing errors in software,Programming
+ARCHITECTURE,The overall structure of a software system,Software
+REPOSITORY,A place where source code or data is stored,Software
+DEPENDENCY,A component that another component relies on,Software
+MODULARITY,Designing a system as separate modules,Software
+MAINTAINABILITY,How easily software can be changed and maintained,Software
+REFACTORING,Improving code structure without changing behavior,Software
+VERSIONING,Managing different versions of software,Software
+FRAMEWORK,A reusable structure for building software,Software
+TESTABILITY,How easily a system can be tested,Software
+REUSABILITY,The ability to use a component again,Software
+COMMUNICATION,The exchange of information between people,General
+RESPONSIBILITY,A duty or task that someone must handle,General
+COLLABORATION,Working together toward a goal,General
+ORGANIZATION,A structured group or arrangement,General
+CONSTRUCTION,The process of building something,General
+ENGINEERING,Applying science and mathematics to solve problems,General
+INNOVATION,A new idea or method,General
+EFFICIENCY,Doing work with little waste,General
+QUALITY,The degree to which something meets requirements,General
+RELIABILITY,The ability to work correctly over time,General
+PHOTOSYNTHESIS,How plants convert light into chemical energy,Science
+ECOSYSTEM,A community of organisms and their environment,Science
+BIODIVERSITY,The variety of life in an area,Science
+GRAVITATION,The force that attracts masses together,Science
+ELECTRICITY,The flow of electric charge,Science
+CHEMISTRY,The study of matter and its changes,Science
+TELESCOPE,An instrument for observing distant objects,Science
+ATMOSPHERE,The layer of gases around a planet,Science
+MICROSCOPIC,Too small to be seen without magnification,Science
+EXPERIMENT,A controlled test used to investigate an idea,Science
+HOSPITALITY,The friendly reception of guests,Service
+TOURISM,Travel for leisure or business,Service
+RESTAURANT,A place where meals are served,Service
+CUSTOMER,A person who buys a product or service,Service
+MANAGEMENT,The process of planning and controlling work,Business
+MARKETING,Activities used to promote and sell products,Business
+LEADERSHIP,The ability to guide a group,Business
+MOTIVATION,A reason that encourages someone to act,Business
+STRATEGY,A plan designed to achieve a goal,Business
+ENTREPRENEUR,A person who starts and runs a business,Business
