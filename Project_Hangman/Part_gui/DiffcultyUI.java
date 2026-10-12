@@ -4,6 +4,7 @@
  */
 package Part_gui;
 import Domain.Player;
+import java.awt.event.*;
 /**
  *
  * @author TUF

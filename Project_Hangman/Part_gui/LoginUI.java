@@ -5,6 +5,7 @@
 package Part_gui;
 import javax.swing.JOptionPane;
 import Domain.Player;
+import java.awt.event.*;
 /**
  *
  * @author TUF
@@ -22,12 +23,12 @@ public class LoginUI extends javax.swing.JFrame {
     jTextField1.setBackground(new java.awt.Color(0, 0, 0, 0)); // ทำให้ JTextField โปร่งใส
     jTextField1.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // ลบขอบของ JTextField
     setLocationRelativeTo(null);// ทำให้หน้าต่างอยู่ตรงกลางของหน้าจอ
-    jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+    jTextField1.addKeyListener(new KeyAdapter() {
     @Override
-    public void keyTyped(java.awt.event.KeyEvent evt) {
+    public void keyTyped(  KeyEvent evt) {
         char c = evt.getKeyChar();
         // ตรวจสอบว่า "ไม่ใช่" a-z และ "ไม่ใช่" A-Z และ "ไม่ใช่" 0-9
-        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == java.awt.event.KeyEvent.VK_BACK_SPACE)) {
+        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == KeyEvent.VK_BACK_SPACE)) {
             evt.consume(); // ปฏิเสธการรับค่า
         }
     }
@@ -102,16 +103,16 @@ public class LoginUI extends javax.swing.JFrame {
     String name = jTextField1.getText().trim();
     
     if (name.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Sai cher gonn i ngo");
+        JOptionPane.showMessageDialog(this, "please enter your name");
         return;
     }
 
     // ตรวจสอบว่ามีชื่อนี้อยู่ในไฟล์ CSV แล้วหรือยัง
-    /* 
+    
     if (nameExists(name)) {
-        JOptionPane.showMessageDialog(this, "mi cher nii yuu leaw i buffalo");
+        JOptionPane.showMessageDialog(this, "This name already to use, please enter another name jub jub");
         return;
-    }*/
+    }/* */
 
     // สร้าง Player จาก Domain หากไม่ซ้ำ
     Player player = new Player(name);
