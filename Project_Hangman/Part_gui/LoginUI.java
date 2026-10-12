@@ -19,6 +19,8 @@ public class LoginUI extends javax.swing.JFrame {
      */
     public LoginUI() {
         initComponents();
+        setResizable(false);
+        pack();
         jTextField1.setOpaque(false); // ทำให้ JTextField โปร่งใส
     jTextField1.setBackground(new java.awt.Color(0, 0, 0, 0)); // ทำให้ JTextField โปร่งใส
     jTextField1.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // ลบขอบของ JTextField

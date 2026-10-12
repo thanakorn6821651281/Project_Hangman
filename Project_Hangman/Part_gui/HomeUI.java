@@ -17,6 +17,8 @@ public class HomeUI extends javax.swing.JFrame {
      */
     public HomeUI() {
         initComponents();
+        setResizable(false);
+        pack();
         setLocationRelativeTo(null);
     }
 
@@ -60,7 +62,7 @@ public class HomeUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       LeaderBoardUI next = new LeaderBoardUI();
+         LeaderBoardUI next = new LeaderBoardUI();
        next.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed

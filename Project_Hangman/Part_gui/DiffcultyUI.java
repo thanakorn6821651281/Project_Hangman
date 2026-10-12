@@ -4,7 +4,7 @@
  */
 package Part_gui;
 import Domain.Player;
-import java.awt.event.*;
+
 /**
  *
  * @author TUF
@@ -19,6 +19,8 @@ public class DiffcultyUI extends javax.swing.JFrame {
      */
     public DiffcultyUI() {
         initComponents();
+        setResizable(false);
+        pack();
         setLocationRelativeTo(null);
     }
     public DiffcultyUI(Player player) {
