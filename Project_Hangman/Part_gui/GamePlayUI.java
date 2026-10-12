@@ -3,11 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Part_gui;
+
 import Domain.GameStatus;
 import Domain.HangmanGame;
 import Domain.Player;
 import Part_Service.AppServices;
-import Domain.GameStatus;
+
 /**
  *
  * @author USER
@@ -112,10 +113,11 @@ public void setStage(int wrong) {
         lblHead = new javax.swing.JLabel();
         lblBody = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        lblArmR = new javax.swing.JLabel();
         lblArmL = new javax.swing.JLabel();
-        lblLegL = new javax.swing.JLabel();
+        lblArmR = new javax.swing.JLabel();
         lblLegR = new javax.swing.JLabel();
+        lblLegL = new javax.swing.JLabel();
+        jButton28 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -128,7 +130,7 @@ public void setStage(int wrong) {
         jButton1.addActionListener(this::jButton1ActionPerformed);
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 600, -1, -1));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/paii.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/paiiwang.png"))); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, -1, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Hangman paii.png"))); // NOI18N
@@ -299,23 +301,31 @@ public void setStage(int wrong) {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Maikwankor.png"))); // NOI18N
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 310, -1, -1));
 
-        lblArmR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Left Arm.png"))); // NOI18N
-        getContentPane().add(lblArmR, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 510, -1, -1));
+        lblArmL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Left Arm.png"))); // NOI18N
+        getContentPane().add(lblArmL, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 510, -1, -1));
 
-        lblArmL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Right arm.png"))); // NOI18N
-        getContentPane().add(lblArmL, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 520, -1, -1));
+        lblArmR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Right arm.png"))); // NOI18N
+        getContentPane().add(lblArmR, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 520, -1, -1));
 
-        lblLegL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/right leg.png"))); // NOI18N
-        getContentPane().add(lblLegL, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 550, -1, -1));
+        lblLegR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/right leg.png"))); // NOI18N
+        getContentPane().add(lblLegR, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 550, -1, -1));
 
-        lblLegR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/left leg.png"))); // NOI18N
-        getContentPane().add(lblLegR, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 550, -1, -1));
+        lblLegL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/left leg.png"))); // NOI18N
+        getContentPane().add(lblLegL, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 550, -1, -1));
+
+        jButton28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Hint.png"))); // NOI18N
+        jButton28.setToolTipText("");
+        jButton28.setBorderPainted(false);
+        jButton28.setContentAreaFilled(false);
+        jButton28.addActionListener(this::jButton28ActionPerformed);
+        getContentPane().add(jButton28, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 10, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/BACKGROUND WANG.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     private void onLetter(char c) {
     if (game == null || game.getStatus() != GameStatus.PLAYING) {
         return;
@@ -326,11 +336,40 @@ public void setStage(int wrong) {
 
         disableLetter(Character.toUpperCase(c));
         refresh();
+        
+        // เช็คสถานะหลังจากการทาย
+            GameStatus currentStatus = game.getStatus();
+if (currentStatus == GameStatus.WIN) {
+                // ถ้าทายคำนี้ถูกหมด ให้คำนวณและเก็บคะแนนก่อน
+     int pts = 0;
+        try {
+        pts = AppServices.game().score(game);
+        } catch (Exception e) {
+                    pts = 100;
+            }
+        if (player != null) {
+                    player.addScore(pts);
+                }
 
-        if (game.getStatus() != GameStatus.PLAYING) {
-            finishGame();
-        }
+                // แจ้งเตือนว่าผ่านคำนี้แล้ว และโหลดคำใหม่
+                javax.swing.JOptionPane.showMessageDialog(this, "Correct! Next Word...");
+                
+                // โหลดคำศัพท์ใหม่โดยใช้ระดับความยากเดิม และสุ่มคำที่ไม่ซ้ำกับคำเดิม
+                game = AppServices.game().nextGame(game.getDifficulty(), game.getAnswer());
+                
+                // รีเซ็ตปุ่มตัวอักษรทั้งหมดให้กลับมากดได้อีกครั้ง
+                for (javax.swing.JButton btn : letterButtons) {
+                    btn.setEnabled(true);
+                }
+                
+                // รีเซ็ตภาพคนแขวนคอ และอัปเดตหน้าจอสำหรับคำใหม่
+                resetParts();
+                refresh();
 
+            } else if (currentStatus == GameStatus.LOST) {
+                // ถ้าแพ้ (ทายผิดจนโควต้าหมด) ค่อยจบเกม
+                finishGame();
+            }
     } catch (IllegalArgumentException | IllegalStateException ex) {
         System.out.println(ex.getMessage());
     }
@@ -359,37 +398,25 @@ public void setStage(int wrong) {
     }
     }
     private void finishGame() {
-        boolean won = (game.getStatus() == GameStatus.WIN);
-
-    // 2. คำนวณคะแนน
-    int pts = 0;
-    try {
-        pts = AppServices.game().score(game);
-    } catch (Exception e) {
-        pts = won ? 100 : 0; // คะแนนสำรองกรณีไม่มีบริการคำนวณ
-    }
-
-    // 3. บันทึกคะแนนลงในผู้เล่นและบันทึกลงไฟล์ (ผ่าน AppServices)
-    if (player != null) {
-        player.addScore(pts);
-        try {
-            AppServices.leaderboard().save(player);
-        } catch (Exception e) {
-            System.out.println("Could not save score: " + e.getMessage());
+    
+        // 1. บันทึกคะแนนสะสมทั้งหมดลงไฟล์
+        if (player != null) {
+            try {
+                AppServices.leaderboard().save(player);
+            } catch (Exception e) {
+                System.out.println("Could not save score: " + e.getMessage());
+            }
         }
-    }
 
-    // 4. แสดงข้อความแจ้งเตือนผลลัพธ์
-    if (won) {
-        javax.swing.JOptionPane.showMessageDialog(this, "You Won! Score: " + pts);
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "Game Over! The word was: " + game.getAnswer());
-    }
+        // 2. แสดงข้อความจบเกม (แพ้)
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Game Over!\nThe word was: " + game.getAnswer() + "\nTotal Score: " + (player != null ? player.getScore() : 0));
 
-    // 5. กลับไปยังหน้า HomeUI และปิดหน้าต่างเล่นเกมปัจจุบัน
-    HomeUI home = new HomeUI();
-    home.setVisible(true);
-    dispose();
+        // 3. กลับไปยังหน้า HomeUI และปิดหน้าต่างเล่นเกมปัจจุบัน
+        HomeUI home = new HomeUI();
+        home.setVisible(true);
+        dispose();
+    
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         HomeUI next = new HomeUI();
@@ -413,7 +440,16 @@ public void setStage(int wrong) {
         }
     }        // TODO add your handling code here:
     }//GEN-LAST:event_GroupButtonActionPerformed
-    
+private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {
+        // เช็คว่ามีเกมกำลังเล่นอยู่หรือไม่
+        if (game != null) {
+            // ดึงคำใบ้จากคลาส HangmanGame (หรือ Word) มาแสดงเป็น Popup
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "💡 Hint: " + game.getHint(), 
+                "คำใบ้", 
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -460,6 +496,7 @@ public void setStage(int wrong) {
     private javax.swing.JButton jButton25;
     private javax.swing.JButton jButton26;
     private javax.swing.JButton jButton27;
+    private javax.swing.JButton jButton28;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
