@@ -3,7 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Part_gui;
-
+import java.util.List;
+import Domain.Difficulty;
+import Domain.Player; // ใช้ Player ตามโครงสร้างล่าสุดของคุณ
+import Part_Service.AppServices;
 /**
  *
  * @author TUF
@@ -11,15 +14,60 @@ package Part_gui;
 public class LeaderBoardUI extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LeaderBoardUI.class.getName());
-
+   
     /**
      * Creates new form LeaderBoard
      */
     public LeaderBoardUI() {
         initComponents();
         setLocationRelativeTo(null);
-    }
+        
+        java.awt.Color easyButtonColor = new java.awt.Color(255, 238, 179); 
+        
+        // --- 1. ปรับข้อความของ ชื่อ และ คะแนน ---
+        javax.swing.JLabel[] textLabels = {
+            jLabel14, jLabel16, jLabel15, jLabel17, jLabel12, // ป้ายชื่อ (PLAYER)
+            jLabel19, jLabel20, jLabel21, jLabel22, jLabel18  // ป้ายคะแนน (SCORE)
+        };
+        
+        for(javax.swing.JLabel lbl : textLabels) {
+            lbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER); 
+            lbl.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER); 
+            lbl.setFont(new java.awt.Font("Tahoma", 1, 24)); 
+            lbl.setForeground(easyButtonColor); 
+        }
 
+        // --- 2. ปรับตัวเลข Rank 1, 2, 3 (แยกตั้งค่าทีละป้าย) ---
+        
+        
+        
+        
+        // โหลดข้อมูลโหมด EASY เป็นค่าเริ่มต้นตอนเปิดหน้าแรก
+        loadTop5(Difficulty.EASY);
+    }
+private void loadTop5(Difficulty difficulty) {
+        // 1. เคลียร์ข้อความเก่าออกก่อน (เผื่อโหมดนั้นคนเล่นไม่ถึง 5 คน)
+        jLabel14.setText(""); jLabel19.setText(""); // อันดับ 1
+        jLabel16.setText(""); jLabel20.setText(""); // อันดับ 2
+        jLabel15.setText(""); jLabel21.setText(""); // อันดับ 3
+        jLabel17.setText(""); jLabel22.setText(""); // อันดับ 4
+        jLabel12.setText(""); jLabel18.setText(""); // อันดับ 5
+
+        try {
+            // 2. ดึงข้อมูล
+            List<Player> scores = AppServices.leaderboard().getTopScores(difficulty);
+
+            // 3. นำข้อมูลมาใส่ (เรียงตามลำดับ)
+            if (scores.size() > 0) { jLabel14.setText(scores.get(0).getName()); jLabel19.setText(String.valueOf(scores.get(0).getScore())); }
+            if (scores.size() > 1) { jLabel16.setText(scores.get(1).getName()); jLabel20.setText(String.valueOf(scores.get(1).getScore())); }
+            if (scores.size() > 2) { jLabel15.setText(scores.get(2).getName()); jLabel21.setText(String.valueOf(scores.get(2).getScore())); }
+            if (scores.size() > 3) { jLabel17.setText(scores.get(3).getName()); jLabel22.setText(String.valueOf(scores.get(3).getScore())); }
+            if (scores.size() > 4) { jLabel12.setText(scores.get(4).getName()); jLabel18.setText(String.valueOf(scores.get(4).getScore())); }
+
+        } catch (Exception e) {
+            System.out.println("Error loading Top 5: " + e.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -147,14 +195,17 @@ public class LeaderBoardUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        loadTop5(Difficulty.MEDIUM);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        loadTop5(Difficulty.HARD);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        loadTop5(Difficulty.EASY);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

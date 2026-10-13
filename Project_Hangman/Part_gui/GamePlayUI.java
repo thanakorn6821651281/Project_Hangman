@@ -413,9 +413,12 @@ if (currentStatus == GameStatus.WIN) {
     }
     private void finishGame() {
     
-        // 1. บันทึกคะแนนสะสมทั้งหมดลงไฟล์
-        if (player != null) {
+        // 1. บันทึกคะแนนสะสมและระดับความยากลงไฟล์
+        if (player != null && game != null) {
             try {
+                // ** เพิ่มบรรทัดนี้: ดึงความยากจากเกมปัจจุบัน มาใส่ให้ Player ก่อนเซฟ **
+                player.setDifficulty(game.getDifficulty()); 
+                
                 AppServices.leaderboard().save(player);
             } catch (Exception e) {
                 System.out.println("Could not save score: " + e.getMessage());
