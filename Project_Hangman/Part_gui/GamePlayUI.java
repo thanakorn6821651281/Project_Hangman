@@ -54,8 +54,8 @@ public GamePlayUI(Player player, HangmanGame game) {
     this();
     this.player = player;
     this.game = game;
-    setFocusable(true);
-
+    setupKeyboard();
+    refresh();
     addKeyListener(new java.awt.event.KeyAdapter() {
 
         @Override
@@ -81,7 +81,28 @@ public void setStage(int wrong) {
         parts[i].setVisible(i < wrong);
     }
     }
+    private void setupKeyboard() {
+    javax.swing.InputMap im =
+        getRootPane().getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW);
+    javax.swing.ActionMap am = getRootPane().getActionMap();
 
+    for (int i = 0; i < 26; i++) {
+        final char letter = (char) ('A' + i);
+        String name = "letter" + letter;
+        im.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A + i, 0), name);
+        am.put(name, new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onLetter(letter);
+            }
+        });
+    }
+
+    // ปิดการรับโฟกัสของปุ่ม จะได้ไม่มีกรอบโฟกัสสีฟ้าเหมือนหน้า Home
+    for (javax.swing.JButton b : letterButtons) b.setFocusable(false);
+    jButton1.setFocusable(false);
+    jButton28.setFocusable(false);
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -337,51 +358,25 @@ public void setStage(int wrong) {
     }// </editor-fold>//GEN-END:initComponents
 
     private void onLetter(char c) {//ทำ
-    if (game == null || game.getStatus() != GameStatus.PLAYING) {
-        return;
-    }
+    if (game == null || game.getStatus() != GameStatus.PLAYING) return;
+    if (!game.guess(c)) return;
 
-    try {
-        game.guess(c);
+    disableLetter(Character.toUpperCase(c));
+    refresh();
 
-        disableLetter(Character.toUpperCase(c));
+    GameStatus status = game.getStatus();
+    if (status == GameStatus.WIN) {
+        int pts = AppServices.game().score(game);
+        if (player != null) player.addScore(pts);
+
+        javax.swing.JOptionPane.showMessageDialog(this, "Correct! +" + pts + "\nNext Word...");
+
+        game = AppServices.game().nextGame(game.getDifficulty(), game.getAnswer());
+        for (javax.swing.JButton btn : letterButtons) btn.setEnabled(true);
+        resetParts();
         refresh();
-        
-        // เช็คสถานะหลังจากการทาย
-            GameStatus currentStatus = game.getStatus();
-if (currentStatus == GameStatus.WIN) {
-                // ถ้าทายคำนี้ถูกหมด ให้คำนวณและเก็บคะแนนก่อน
-     int pts = 0;
-        try {
-        pts = AppServices.game().score(game);
-        } catch (Exception e) {
-                    pts = 100;
-            }
-        if (player != null) {
-                    player.addScore(pts);
-                }
-
-                // แจ้งเตือนว่าผ่านคำนี้แล้ว และโหลดคำใหม่
-                javax.swing.JOptionPane.showMessageDialog(this, "Correct! Next Word...");
-                
-                // โหลดคำศัพท์ใหม่โดยใช้ระดับความยากเดิม และสุ่มคำที่ไม่ซ้ำกับคำเดิม
-                game = AppServices.game().nextGame(game.getDifficulty(), game.getAnswer());
-                
-                // รีเซ็ตปุ่มตัวอักษรทั้งหมดให้กลับมากดได้อีกครั้ง
-                for (javax.swing.JButton btn : letterButtons) {
-                    btn.setEnabled(true);
-                }
-                
-                // รีเซ็ตภาพคนแขวนคอ และอัปเดตหน้าจอสำหรับคำใหม่
-                resetParts();
-                refresh();
-
-            } else if (currentStatus == GameStatus.LOST) {
-                // ถ้าแพ้ (ทายผิดจนโควต้าหมด) ค่อยจบเกม
-                finishGame();
-            }
-    } catch (IllegalArgumentException | IllegalStateException ex) {
-        System.out.println(ex.getMessage());
+    } else if (status == GameStatus.LOST) {
+        finishGame();
     }
     }
     private void refresh() {
@@ -399,10 +394,7 @@ if (currentStatus == GameStatus.WIN) {
     jLabel2.setFont(jLabel2.getFont().deriveFont((float) size));
 
     // จำนวนครั้งที่ผิด
-    int wrong = game.getMaxWrong()
-            - game.getWrong();
-
-    setStage(wrong);   // ให้ครบ 6 ชิ้นพอดีตอนแพ้ทุกระดับ
+    setStage(game.getWrong() * parts.length / game.getMaxWrong());
     }
     private void disableLetter(char letter) {
     int index = Character.toUpperCase(letter) - 'A';
@@ -413,29 +405,29 @@ if (currentStatus == GameStatus.WIN) {
     }
     private void finishGame() {
     
-        // 1. บันทึกคะแนนสะสมและระดับความยากลงไฟล์
-        if (player != null && game != null) {
-            try {
-                // ** เพิ่มบรรทัดนี้: ดึงความยากจากเกมปัจจุบัน มาใส่ให้ Player ก่อนเซฟ **
-                player.setDifficulty(game.getDifficulty()); 
-                
-                AppServices.leaderboard().save(player);
-            } catch (Exception e) {
-                System.out.println("Could not save score: " + e.getMessage());
-            }
+        // 1. บันทึกคะแนนสะสมลงไฟล์ของระดับที่เล่น
+    if (player != null) {
+        try {
+            AppServices.leaderboard().save(player, game.getDifficulty());
+        } catch (RuntimeException e) {
+            System.out.println("Could not save score: " + e.getMessage());
         }
+    }
 
-        // 2. แสดงข้อความจบเกม (แพ้)
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Game Over!\nThe word was: " + game.getAnswer() + "\nTotal Score: " + (player != null ? player.getScore() : 0));
+    // 2. แจ้งผล
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Game Over!\nThe word was: " + game.getAnswer()
+        + "\nTotal Score: " + (player != null ? player.getScore() : 0));
 
-        // 3. กลับไปยังหน้า HomeUI และปิดหน้าต่างเล่นเกมปัจจุบัน
-        HomeUI home = new HomeUI();
-        home.setVisible(true);
-        dispose();
+    // 3. ไปดูตารางคะแนนของระดับที่เพิ่งเล่น (ถ้าอยากกลับ Home ให้ใช้ new HomeUI() เหมือนเดิม)
+    new LeaderBoardUI(game.getDifficulty()).setVisible(true);
+    dispose();
     
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         if (player != null && game != null && player.getScore() > 0) {
+        AppServices.leaderboard().save(player, game.getDifficulty());
+    }
         HomeUI next = new HomeUI();
        next.setVisible(true);
        this.dispose();         // TODO add your handling code here:

@@ -3,10 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Part_gui;
-import java.util.List;
-import Domain.Difficulty;
-import Domain.Player; // ใช้ Player ตามโครงสร้างล่าสุดของคุณ
-import Part_Service.AppServices;
+
 /**
  *
  * @author TUF
@@ -14,66 +11,60 @@ import Part_Service.AppServices;
 public class LeaderBoardUI extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LeaderBoardUI.class.getName());
-   
+    private javax.swing.JLabel[] nameLabels;
+    private javax.swing.JLabel[] scoreLabels;
+    
     /**
      * Creates new form LeaderBoard
      */
     public LeaderBoardUI() {
         initComponents();
         setLocationRelativeTo(null);
-        
-        java.awt.Color easyButtonColor = new java.awt.Color(255, 238, 179); 
-        
-        // --- 1. ปรับข้อความของ ชื่อ และ คะแนน ---
-        javax.swing.JLabel[] textLabels = {
-            jLabel14, jLabel16, jLabel15, jLabel17, jLabel12, // ป้ายชื่อ (PLAYER)
-            jLabel19, jLabel20, jLabel21, jLabel22, jLabel18  // ป้ายคะแนน (SCORE)
-        };
-        
-        for(javax.swing.JLabel lbl : textLabels) {
-            lbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER); 
-            lbl.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER); 
-            lbl.setFont(new java.awt.Font("Tahoma", 1, 24)); 
-            lbl.setForeground(easyButtonColor); 
-        }
+    
+        nameLabels  = new javax.swing.JLabel[] { jLabel14, jLabel16, jLabel15, jLabel17, jLabel12 };
+        scoreLabels = new javax.swing.JLabel[] { jLabel19, jLabel20, jLabel21, jLabel22, jLabel18 };
 
-        // --- 2. ปรับตัวเลข Rank 1, 2, 3 (แยกตั้งค่าทีละป้าย) ---
-        
-        
-        
-        
-        // โหลดข้อมูลโหมด EASY เป็นค่าเริ่มต้นตอนเปิดหน้าแรก
-        loadTop5(Difficulty.EASY);
-    }
-private void loadTop5(Difficulty difficulty) {
-        // 1. เคลียร์ข้อความเก่าออกก่อน (เผื่อโหมดนั้นคนเล่นไม่ถึง 5 คน)
-        jLabel14.setText(""); jLabel19.setText(""); // อันดับ 1
-        jLabel16.setText(""); jLabel20.setText(""); // อันดับ 2
-        jLabel15.setText(""); jLabel21.setText(""); // อันดับ 3
-        jLabel17.setText(""); jLabel22.setText(""); // อันดับ 4
-        jLabel12.setText(""); jLabel18.setText(""); // อันดับ 5
-
-        try {
-            // 2. ดึงข้อมูล
-            List<Player> scores = AppServices.leaderboard().getTopScores(difficulty);
-
-            // 3. นำข้อมูลมาใส่ (เรียงตามลำดับ)
-            if (scores.size() > 0) { jLabel14.setText(scores.get(0).getName()); jLabel19.setText(String.valueOf(scores.get(0).getScore())); }
-            if (scores.size() > 1) { jLabel16.setText(scores.get(1).getName()); jLabel20.setText(String.valueOf(scores.get(1).getScore())); }
-            if (scores.size() > 2) { jLabel15.setText(scores.get(2).getName()); jLabel21.setText(String.valueOf(scores.get(2).getScore())); }
-            if (scores.size() > 3) { jLabel17.setText(scores.get(3).getName()); jLabel22.setText(String.valueOf(scores.get(3).getScore())); }
-            if (scores.size() > 4) { jLabel12.setText(scores.get(4).getName()); jLabel18.setText(String.valueOf(scores.get(4).getScore())); }
-
-        } catch (Exception e) {
-            System.out.println("Error loading Top 5: " + e.getMessage());
+    java.awt.Font font = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 20);
+    java.awt.Color color = new java.awt.Color(60, 30, 10);
+    for (javax.swing.JLabel[] row : new javax.swing.JLabel[][] { nameLabels, scoreLabels }) {
+        for (javax.swing.JLabel l : row) {
+            l.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER); // วางข้อความทับบนรูปกรอบ
+            l.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+            l.setFont(font);
+            l.setForeground(color);
         }
     }
+    showScores(Domain.Difficulty.EASY);
+    }
+    // เปิดหน้านี้โดยระบุระดับที่จะแสดงเลย (ใช้ตอนจบเกม)
+public LeaderBoardUI(Domain.Difficulty level) {
+    this();
+    showScores(level);
+}
+private void showScores(Domain.Difficulty level) {
+    java.util.List<Domain.Player> list;
+    try {
+        list = Part_Service.AppServices.leaderboard().getScores(level);
+    } catch (RuntimeException | ExceptionInInitializerError ex) {
+        logger.log(java.util.logging.Level.SEVERE, null, ex);
+        list = new java.util.ArrayList<>();
+    }
+    for (int i = 0; i < nameLabels.length; i++) {
+        if (i < list.size()) {
+            nameLabels[i].setText(list.get(i).getName());
+            scoreLabels[i].setText(String.valueOf(list.get(i).getScore()));
+        } else {
+            nameLabels[i].setText("-");
+            scoreLabels[i].setText("-");
+        }
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
-    //@SuppressWarnings("unchecked")
+   //@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -101,6 +92,7 @@ private void loadTop5(Difficulty difficulty) {
         jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/mainmenu.png"))); // NOI18N
@@ -110,7 +102,7 @@ private void loadTop5(Difficulty difficulty) {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/COMPONENT LEDAERBOARD.png"))); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 160, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 150, -1, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Rank Label.png"))); // NOI18N
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 290, -1, -1));
@@ -124,50 +116,50 @@ private void loadTop5(Difficulty difficulty) {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Score Label.png"))); // NOI18N
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 290, -1, -1));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Gold Label.png"))); // NOI18N
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 340, -1, -1));
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/1.png"))); // NOI18N
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 330, -1, -1));
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Silver Label.png"))); // NOI18N
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 400, -1, -1));
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/2.png"))); // NOI18N
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 390, -1, -1));
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Bronze Label.png"))); // NOI18N
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 460, -1, -1));
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/3.png"))); // NOI18N
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 440, -1, -1));
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Wood Label.png"))); // NOI18N
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 540, -1, -1));
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/4.png"))); // NOI18N
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 490, -1, -1));
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Wood Label.png"))); // NOI18N
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 600, -1, -1));
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/5.png"))); // NOI18N
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 540, -1, -1));
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Long Label.png"))); // NOI18N
-        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 600, -1, -1));
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 540, -1, -1));
 
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Long Label.png"))); // NOI18N
-        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 350, -1, -1));
+        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 340, -1, -1));
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Long Label.png"))); // NOI18N
-        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 480, -1, -1));
+        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 440, -1, -1));
 
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Long Label.png"))); // NOI18N
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 420, -1, -1));
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 390, -1, -1));
 
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Long Label.png"))); // NOI18N
-        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 540, -1, -1));
+        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 490, -1, -1));
 
         jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Short Label.png"))); // NOI18N
-        getContentPane().add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 600, -1, -1));
+        getContentPane().add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 540, -1, -1));
 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Short Label.png"))); // NOI18N
-        getContentPane().add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 350, -1, -1));
+        getContentPane().add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 340, -1, -1));
 
         jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Short Label.png"))); // NOI18N
-        getContentPane().add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 420, -1, -1));
+        getContentPane().add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 390, -1, -1));
 
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Short Label.png"))); // NOI18N
-        getContentPane().add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 480, -1, -1));
+        getContentPane().add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 440, -1, -1));
 
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Short Label.png"))); // NOI18N
-        getContentPane().add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 540, -1, -1));
+        getContentPane().add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 490, -1, -1));
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/EASYLEAD.png"))); // NOI18N
         jButton3.setBorderPainted(false);
@@ -187,26 +179,37 @@ private void loadTop5(Difficulty difficulty) {
         jButton2.addActionListener(this::jButton2ActionPerformed);
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 160, -1, -1));
 
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/BACK.png"))); // NOI18N
+        jButton4.setBorderPainted(false);
+        jButton4.setContentAreaFilled(false);
+        jButton4.addActionListener(this::jButton4ActionPerformed);
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 600, 300, 100));
+
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/mainmenu.png"))); // NOI18N
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
+        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        loadTop5(Difficulty.MEDIUM);
+           showScores(Domain.Difficulty.MEDIUM);
+ // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        showScores(Domain.Difficulty.HARD);
         // TODO add your handling code here:
-        loadTop5(Difficulty.HARD);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        loadTop5(Difficulty.EASY);
+       showScores(Domain.Difficulty.EASY); // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    HomeUI back = new HomeUI();
+       back.setVisible(true);
+       this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,6 +240,7 @@ private void loadTop5(Difficulty difficulty) {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
