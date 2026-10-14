@@ -14,102 +14,124 @@ import Part_Service.AppServices;
  * @author USER
  */
 public class GamePlayUI extends javax.swing.JFrame {
-    private Player player;
-    private HangmanGame game;
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GamePlayUI.class.getName());
 
-    /**
-     * Creates new form GamePlay
-     */
-    private javax.swing.JLabel[] parts;
-    private javax.swing.JButton[] letterButtons;
+    // ===== ตัวแปรที่ใช้เก็บข้อมูลของผู้เล่นและเกม =====
+    private Player player; // ผู้เล่นที่กำลังเล่นเกม
+    private HangmanGame game; // ข้อมูลและสถานะของเกม Hangman
+    private static final java.util.logging.Logger logger = java.util.logging.Logger
+            .getLogger(GamePlayUI.class.getName());
+
+    // ===== ตัวแปรสำหรับจัดการส่วนต่าง ๆ ของหน้าจอ =====
+    private javax.swing.JLabel[] parts; // ส่วนต่าง ๆ ของตัวละคร Hangman
+    private javax.swing.JButton[] letterButtons; // ปุ่มตัวอักษร A-Z
+
+    // ===== ตัวสร้างหน้าจอเกม =====
+    // ตั้งค่าหน้าจอ ปุ่มตัวอักษร และตำแหน่งเริ่มต้นของตัวละคร
     public GamePlayUI() {
         initComponents();
         letterButtons = new javax.swing.JButton[] {
-    jButton2, jButton3, jButton4, jButton5, jButton6,
-    jButton7, jButton8, jButton9, jButton10, jButton11,
-    jButton12, jButton13, jButton14, jButton15, jButton16,
-    jButton17, jButton18, jButton19, jButton20, jButton21,
-    jButton22, jButton23, jButton24, jButton25, jButton26,
-    jButton27
-    };
+                jButton2, jButton3, jButton4, jButton5, jButton6,
+                jButton7, jButton8, jButton9, jButton10, jButton11,
+                jButton12, jButton13, jButton14, jButton15, jButton16,
+                jButton17, jButton18, jButton19, jButton20, jButton21,
+                jButton22, jButton23, jButton24, jButton25, jButton26,
+                jButton27
+        };
         setResizable(false);
         pack();
         setLocationRelativeTo(null);
         parts = new javax.swing.JLabel[] {
-        lblHead, lblBody, lblArmL, lblArmR, lblLegL, lblLegR
-        
-    }; 
-    resetParts();
+                lblHead, lblBody, lblArmL, lblArmR, lblLegL, lblLegR
 
-    // จัดข้อความคำศัพท์ให้อยู่กลางป้ายเปล่า (jLabel2 = ป้าย paiiwang.png)
-    jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    jLabel2.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
-    jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    jLabel2.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
-    jLabel2.setForeground(new java.awt.Color(80, 40, 10));
-    jLabel2.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 40));
-}
-public GamePlayUI(Player player, HangmanGame game) {
-    this();
-    this.player = player;
-    this.game = game;
-    setupKeyboard();
-    refresh();
-    addKeyListener(new java.awt.event.KeyAdapter() {
+        };
+        resetParts();
 
-        @Override
-        public void keyPressed(java.awt.event.KeyEvent e) {
+        // จัดข้อความคำศัพท์ให้อยู่กลางป้ายเปล่า (jLabel2 = ป้าย paiiwang.png)
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel2.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setForeground(new java.awt.Color(80, 40, 10));
+        jLabel2.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 40));
+    }
 
-            char c = Character.toUpperCase(e.getKeyChar());
+    // ตัวสร้างหน้าจอเมื่อมีข้อมูลผู้เล่นและเกมพร้อมแล้ว
+    // รับข้อมูลจากหน้าก่อนหน้า แล้วเตรียมคีย์บอร์ดและแสดงคำศัพท์
+    public GamePlayUI(Player player, HangmanGame game) {
+        this();
+        this.player = player;
+        this.game = game;
+        setupKeyboard();
+        refresh();
+        /*
+         * addKeyListener(new java.awt.event.KeyAdapter() {
+         * 
+         * @Override
+         * public void keyPressed(java.awt.event.KeyEvent e) {
+         * 
+         * char c = Character.toUpperCase(e.getKeyChar());
+         * 
+         * if (c >= 'A' && c <= 'Z') {
+         * onLetter(c);
+         * }
+         * }
+         * });
+         * refresh();
+         */
+    }
 
-            if (c >= 'A' && c <= 'Z') {
-                onLetter(c);
-            }
+    // ===== การจัดการภาพตัวละคร Hangman =====
+
+    // ซ่อนชิ้นส่วนตัวละครทั้งหมดเมื่อเริ่มเกมใหม่
+    public void resetParts() {
+        for (javax.swing.JLabel p : parts) {
+            p.setVisible(false);
         }
-    });
-    refresh();
-}
-
-public void resetParts() {
-    for (javax.swing.JLabel p : parts) p.setVisible(false);
-}
-
-// wrong = จำนวนครั้งที่ผิด (0-6)
-public void setStage(int wrong) {
-    for (int i = 0; i < parts.length; i++) {
-        parts[i].setVisible(i < wrong);
     }
+
+    // แสดงชิ้นส่วนตัวละครตามจำนวนครั้งที่ตอบผิด (0-6)
+    public void setStage(int wrong) {
+        for (int i = 0; i < parts.length; i++) {
+            parts[i].setVisible(i < wrong);
+        }
     }
+
+    // ===== การตั้งค่าการควบคุมด้วยแป้นพิมพ์ =====
+    // ให้ผู้เล่นกด A-Z บนคีย์บอร์ดแทนการคลิกปุ่มบนหน้าจอ
     private void setupKeyboard() {
-    javax.swing.InputMap im =
-        getRootPane().getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW);
-    javax.swing.ActionMap am = getRootPane().getActionMap();
+        javax.swing.InputMap im = getRootPane().getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW);
+        javax.swing.ActionMap am = getRootPane().getActionMap();
 
-    for (int i = 0; i < 26; i++) {
-        final char letter = (char) ('A' + i);
-        String name = "letter" + letter;
-        im.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A + i, 0), name);
-        am.put(name, new javax.swing.AbstractAction() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                onLetter(letter);
-            }
-        });
+        for (int i = 0; i < 26; i++) {
+            final char letter = (char) ('A' + i);
+            String name = "letter" + letter;
+            im.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A + i, 0), name);
+            am.put(name, new javax.swing.AbstractAction() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    onLetter(letter);
+                }
+            });
+        }
+
+        // ปิดการรับโฟกัสของปุ่ม จะได้ไม่มีกรอบโฟกัสสีฟ้าเหมือนหน้า Home
+        for (javax.swing.JButton b : letterButtons)
+            b.setFocusable(false);
+        jButton1.setFocusable(false);
+        jButton28.setFocusable(false);
     }
 
-    // ปิดการรับโฟกัสของปุ่ม จะได้ไม่มีกรอบโฟกัสสีฟ้าเหมือนหน้า Home
-    for (javax.swing.JButton b : letterButtons) b.setFocusable(false);
-    jButton1.setFocusable(false);
-    jButton28.setFocusable(false);
-}
+    // ===== ส่วนสร้างและจัดวางองค์ประกอบ GUI =====
+    // โค้ดส่วนนี้สร้างปุ่ม รูปภาพ และตำแหน่งขององค์ประกอบต่าง ๆ
+    // หมายเหตุ: เป็นโค้ดที่ NetBeans GUI Builder สร้างให้ ควรแก้ผ่าน Design
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
-    //@SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
@@ -357,116 +379,146 @@ public void setStage(int wrong) {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void onLetter(char c) {//ทำ
-    if (game == null || game.getStatus() != GameStatus.PLAYING) return;
-    if (!game.guess(c)) return;
+    // ===== การประมวลผลเมื่อผู้เล่นเลือกตัวอักษร =====
+    // ส่งตัวอักษรให้เกมตรวจสอบ อัปเดตคะแนน และตรวจสอบว่าชนะหรือแพ้
+    private void onLetter(char c) {// ทำ
+        if (game == null || game.getStatus() != GameStatus.PLAYING)
+            return;
+        if (!game.guess(c))
+            return;
 
-    disableLetter(Character.toUpperCase(c));
-    refresh();
-
-    GameStatus status = game.getStatus();
-    if (status == GameStatus.WIN) {
-        int pts = AppServices.game().score(game);
-        if (player != null) player.addScore(pts);
-
-        javax.swing.JOptionPane.showMessageDialog(this, "Correct! +" + pts + "\nNext Word...");
-
-        game = AppServices.game().nextGame(game.getDifficulty(), game.getAnswer());
-        for (javax.swing.JButton btn : letterButtons) btn.setEnabled(true);
-        resetParts();
+        disableLetter(Character.toUpperCase(c));
         refresh();
-    } else if (status == GameStatus.LOST) {
-        finishGame();
+
+        GameStatus status = game.getStatus();
+        if (status == GameStatus.WIN) {
+            int pts = AppServices.game().score(game);
+            if (player != null)
+                player.addScore(pts);
+
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                javax.swing.JOptionPane.showMessageDialog(this, "Correct! +" + pts + "\nNext Word...");
+                game = AppServices.game().nextGame(game.getDifficulty(), game.getAnswer());
+                for (javax.swing.JButton btn : letterButtons)
+                    btn.setEnabled(true);
+                resetParts();
+                refresh();
+            });
+        } else if (status == GameStatus.LOST) {
+            finishGame();
+        }
     }
-    }
+
+    // ===== อัปเดตข้อมูลที่แสดงบนหน้าจอ =====
+    // แสดงคำศัพท์ที่เปิดแล้ว และอัปเดตจำนวนชิ้นส่วนตามจำนวนครั้งที่ตอบผิด
     private void refresh() {
-    // jLabelWord.setText(game.displayWord());
-    if (game == null) {
-        return;
+        // jLabelWord.setText(game.displayWord());
+        if (game == null) {
+            return;
+        }
+
+        // แสดงคำ เช่น C__ หรือ C_T
+        // เปลี่ยน jLabel2 เป็น JLabel ที่คุณใช้แสดงคำ
+        String word = game.displayWord();
+        jLabel2.setText(word);
+        // ลดขนาดฟอนต์อัตโนมัติถ้าคำยาว เพื่อไม่ให้ล้นป้าย
+        int size = word.length() <= 10 ? 40 : Math.max(18, 400 / word.length());
+        jLabel2.setFont(jLabel2.getFont().deriveFont((float) size));
+
+        // จำนวนครั้งที่ผิด
+        setStage(game.getWrong() * parts.length / game.getMaxWrong());
     }
 
-    // แสดงคำ เช่น C__ หรือ C_T
-    // เปลี่ยน jLabel2 เป็น JLabel ที่คุณใช้แสดงคำ
-    String word = game.displayWord();
-    jLabel2.setText(word);
-    // ลดขนาดฟอนต์อัตโนมัติถ้าคำยาว เพื่อไม่ให้ล้นป้าย
-    int size = word.length() <= 10 ? 40 : Math.max(18, 400 / word.length());
-    jLabel2.setFont(jLabel2.getFont().deriveFont((float) size));
-
-    // จำนวนครั้งที่ผิด
-    setStage(game.getWrong() * parts.length / game.getMaxWrong());
-    }
+    // ===== ปิดปุ่มตัวอักษรที่ผู้เล่นเลือกไปแล้ว =====
+    // ป้องกันไม่ให้เลือกตัวอักษรเดิมซ้ำจากปุ่มบนหน้าจอ
     private void disableLetter(char letter) {
-    int index = Character.toUpperCase(letter) - 'A';
+        int index = Character.toUpperCase(letter) - 'A';
 
-    if (index >= 0 && index < letterButtons.length) {
-        letterButtons[index].setEnabled(false);
+        if (index >= 0 && index < letterButtons.length) {
+            letterButtons[index].setEnabled(false);
+        }
     }
-    }
+
     private void finishGame() {
-    
+
         // 1. บันทึกคะแนนสะสมลงไฟล์ของระดับที่เล่น
-    if (player != null) {
-        try {
+        if (player != null) {
+            try {
+                AppServices.leaderboard().save(player, game.getDifficulty());
+            } catch (RuntimeException e) {
+                System.out.println("Could not save score: " + e.getMessage());
+            }
+        }
+
+        // 2. แจ้งผล
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Game Over!\nThe word was: " + game.getAnswer()
+                        + "\nTotal Score: " + (player != null ? player.getScore() : 0));
+
+        // 3. ไปดูตารางคะแนนของระดับที่เพิ่งเล่น (ถ้าอยากกลับ Home ให้ใช้ new HomeUI()
+        // เหมือนเดิม)
+        new LeaderBoardUI(game.getDifficulty()).setVisible(true);
+        dispose();
+
+    }
+
+    // ===== เหตุการณ์เมื่อกดปุ่มกลับ =====
+    // บันทึกคะแนน (ถ้ามี) แล้วกลับไปยังหน้า Home
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
+        if (player != null && game != null && player.getScore() > 0) {
             AppServices.leaderboard().save(player, game.getDifficulty());
-        } catch (RuntimeException e) {
-            System.out.println("Could not save score: " + e.getMessage());
         }
-    }
-
-    // 2. แจ้งผล
-    javax.swing.JOptionPane.showMessageDialog(this,
-        "Game Over!\nThe word was: " + game.getAnswer()
-        + "\nTotal Score: " + (player != null ? player.getScore() : 0));
-
-    // 3. ไปดูตารางคะแนนของระดับที่เพิ่งเล่น (ถ้าอยากกลับ Home ให้ใช้ new HomeUI() เหมือนเดิม)
-    new LeaderBoardUI(game.getDifficulty()).setVisible(true);
-    dispose();
-    
-    }
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         if (player != null && game != null && player.getScore() > 0) {
-        AppServices.leaderboard().save(player, game.getDifficulty());
-    }
         HomeUI next = new HomeUI();
-       next.setVisible(true);
-       this.dispose();         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        next.setVisible(true);
+        this.dispose(); // TODO add your handling code here:
+    }// GEN-LAST:event_jButton1ActionPerformed
 
-    private void GroupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GroupButtonActionPerformed
-        javax.swing.JButton clickedButton =
-            (javax.swing.JButton) evt.getSource();
+    // ===== เหตุการณ์เมื่อกดปุ่มตัวอักษร A-Z =====
+    // หาว่าปุ่มที่กดตรงกับตัวอักษรใด แล้วส่งไปประมวลผลใน onLetter()
+    private void GroupButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_GroupButtonActionPerformed
+        javax.swing.JButton clickedButton = (javax.swing.JButton) evt.getSource();
 
-    for (int i = 0; i < letterButtons.length; i++) {
+        for (int i = 0; i < letterButtons.length; i++) {
 
-        if (letterButtons[i] == clickedButton) {
+            if (letterButtons[i] == clickedButton) {
 
-            char letter = (char) ('A' + i);
+                char letter = (char) ('A' + i);
 
-            onLetter(letter);
+                onLetter(letter);
 
-            break;
-        }
-    }        // TODO add your handling code here:
-    }//GEN-LAST:event_GroupButtonActionPerformed
-private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {
-        // เช็คว่ามีเกมกำลังเล่นอยู่หรือไม่
+                break;
+            }
+        } // TODO add your handling code here:
+    }// GEN-LAST:event_GroupButtonActionPerformed
+     // ===== เหตุการณ์เมื่อกดปุ่มคำใบ้ =====
+     // แสดงคำใบ้ของคำศัพท์ปัจจุบัน หากมีเกมอยู่
+
+    private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {
+        // ตรวจสอบว่ามีเกมกำลังเล่นอยู่หรือไม่
         if (game != null) {
             // ดึงคำใบ้จากคลาส HangmanGame (หรือ Word) มาแสดงเป็น Popup
-            javax.swing.JOptionPane.showMessageDialog(this, 
-                "💡 Hint: " + game.getHint(), 
-                "คำใบ้", 
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "💡 Hint: " + game.getHint(),
+                    "คำใบ้",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
+    // ===== จุดเริ่มต้นของโปรแกรมสำหรับทดสอบหน้าจอนี้โดยตรง =====
+    // โดยปกติหน้าจอนี้ควรถูกเปิดจากหน้าก่อนหน้า พร้อมส่ง Player และ HangmanGame
+    // มาให้
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
+        // (optional) ">
+        /*
+         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
+         * look and feel.
+         * For details see
+         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -478,12 +530,14 @@ private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        // </editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new GamePlayUI().setVisible(true));
     }
 
+    // ===== ประกาศตัวแปรขององค์ประกอบ GUI =====
+    // โค้ดส่วนนี้เป็นตัวแปรที่ NetBeans GUI Builder สร้างให้ ไม่ควรแก้ชื่อเอง
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
