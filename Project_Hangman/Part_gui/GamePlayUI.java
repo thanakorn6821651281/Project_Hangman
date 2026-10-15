@@ -396,14 +396,11 @@ public class GamePlayUI extends javax.swing.JFrame {
             if (player != null)
                 player.addScore(pts);
 
-            javax.swing.SwingUtilities.invokeLater(() -> {
-                javax.swing.JOptionPane.showMessageDialog(this, "Correct! +" + pts + "\nNext Word...");
-                game = AppServices.game().nextGame(game.getDifficulty(), game.getAnswer());
-                for (javax.swing.JButton btn : letterButtons)
-                    btn.setEnabled(true);
-                resetParts();
-                refresh();
-            });
+            // เปิดหน้า Win พร้อมส่งข้อมูล player (ที่บวกคะแนนแล้ว) และ game ไปด้วย
+            Win winScreen = new Win(player, game);
+            winScreen.setVisible(true);
+            this.dispose();
+            
         } else if (status == GameStatus.LOST) {
             finishGame();
         }
@@ -450,15 +447,10 @@ public class GamePlayUI extends javax.swing.JFrame {
             }
         }
 
-        // 2. แจ้งผล
-        javax.swing.JOptionPane.showMessageDialog(this,
-                "Game Over!\nThe word was: " + game.getAnswer()
-                        + "\nTotal Score: " + (player != null ? player.getScore() : 0));
-
-        // 3. ไปดูตารางคะแนนของระดับที่เพิ่งเล่น (ถ้าอยากกลับ Home ให้ใช้ new HomeUI()
-        // เหมือนเดิม)
-        new LeaderBoardUI(game.getDifficulty()).setVisible(true);
-        dispose();
+        // 2. เปลี่ยนไปหน้า Lose พร้อมส่งข้อมูล player และ game ไปด้วย
+        Lose loseScreen = new Lose(player, game);
+        loseScreen.setVisible(true);
+        this.dispose();
 
     }
 
