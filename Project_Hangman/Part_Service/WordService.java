@@ -2,7 +2,7 @@ package Part_Service;
 import Domain.*;
 import Part_Data.WordRepository;
 import java.util.*;
-
+    // ===== คลาส WordService ใช้จัดการคำศัพท์ โดยใช้ WordRepository เพื่อดึงคำศัพท์ตามระดับความยาก =====
 public class WordService {
     private final WordRepository repository; // ทำหน้าที่เก็บข้อมูลคำศัพท์
     private final Random random=new Random(); // สุ่มคำศัพท์จาก repository

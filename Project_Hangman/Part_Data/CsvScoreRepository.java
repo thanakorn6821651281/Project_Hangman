@@ -7,7 +7,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
-
+    // ===== คลาส CsvScoreRepository ใช้จัดการคะแนนของผู้เล่น โดยเก็บข้อมูลในไฟล์ CSV =====
 public class CsvScoreRepository implements ScoreRepository {
     private final Path file; // players.csv : name,score,difficulty (รวมทุกระดับ)
 

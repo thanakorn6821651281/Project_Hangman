@@ -18,8 +18,6 @@ public class GamePlayUI extends javax.swing.JFrame {
     // ===== ตัวแปรที่ใช้เก็บข้อมูลของผู้เล่นและเกม =====
     private Player player; // ผู้เล่นที่กำลังเล่นเกม
     private HangmanGame game; // ข้อมูลและสถานะของเกม Hangman
-    private static final java.util.logging.Logger logger = java.util.logging.Logger
-            .getLogger(GamePlayUI.class.getName());
 
     // ===== ตัวแปรสำหรับจัดการส่วนต่าง ๆ ของหน้าจอ =====
     private javax.swing.JLabel[] parts; // ส่วนต่าง ๆ ของตัวละคร Hangman
@@ -396,14 +394,11 @@ public class GamePlayUI extends javax.swing.JFrame {
             if (player != null)
                 player.addScore(pts);
 
-            javax.swing.SwingUtilities.invokeLater(() -> {
-                javax.swing.JOptionPane.showMessageDialog(this, "Correct! +" + pts + "\nNext Word...");
-                game = AppServices.game().nextGame(game.getDifficulty(), game.getAnswer());
-                for (javax.swing.JButton btn : letterButtons)
-                    btn.setEnabled(true);
-                resetParts();
-                refresh();
-            });
+            // เปิดหน้า Win พร้อมส่งข้อมูล player (ที่บวกคะแนนแล้ว) และ game ไปด้วย
+            Win winScreen = new Win(player, game);
+            winScreen.setVisible(true);
+            this.dispose();
+
         } else if (status == GameStatus.LOST) {
             finishGame();
         }
@@ -450,15 +445,16 @@ public class GamePlayUI extends javax.swing.JFrame {
             }
         }
 
-        // 2. แจ้งผล
+        // 2. เด้ง Popup แสดงคำเฉลยก่อน (โปรแกรมจะรอจนกว่าผู้เล่นจะกด OK)
         javax.swing.JOptionPane.showMessageDialog(this,
-                "Game Over!\nThe word was: " + game.getAnswer()
-                        + "\nTotal Score: " + (player != null ? player.getScore() : 0));
+                "The word was: " + game.getAnswer(),
+                "Game Over",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-        // 3. ไปดูตารางคะแนนของระดับที่เพิ่งเล่น (ถ้าอยากกลับ Home ให้ใช้ new HomeUI()
-        // เหมือนเดิม)
-        new LeaderBoardUI(game.getDifficulty()).setVisible(true);
-        dispose();
+        // 3. พอกด OK แล้ว ค่อยเปลี่ยนไปหน้า Lose
+        Lose loseScreen = new Lose(player, game);
+        loseScreen.setVisible(true);
+        this.dispose();
 
     }
 
@@ -502,38 +498,6 @@ public class GamePlayUI extends javax.swing.JFrame {
                     "คำใบ้",
                     javax.swing.JOptionPane.INFORMATION_MESSAGE);
         }
-    }
-
-    // ===== จุดเริ่มต้นของโปรแกรมสำหรับทดสอบหน้าจอนี้โดยตรง =====
-    // โดยปกติหน้าจอนี้ควรถูกเปิดจากหน้าก่อนหน้า พร้อมส่ง Player และ HangmanGame
-    // มาให้
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-        // (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-         * look and feel.
-         * For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        // </editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new GamePlayUI().setVisible(true));
     }
 
     // ===== ประกาศตัวแปรขององค์ประกอบ GUI =====
