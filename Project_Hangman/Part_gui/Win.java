@@ -5,17 +5,17 @@ import Domain.Player;
 import Part_Service.AppServices;
 
 public class Win extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Win.class.getName());
 
-    // ตัวแปรเก็บข้อมูลผู้เล่นและเกม
-    private Player player;
-    private HangmanGame game;
-    private javax.swing.JLabel lblScoreText;
+    // ===== ตัวแปรที่ใช้เก็บข้อมูลของผู้เล่นและเกม =====
 
-    /**
-     * Creates new form Win
-     */
+    private Player player; // ข้อมูลผู้เล่นปัจจุบัน
+    private HangmanGame game; // ข้อมูลและสถานะของเกม Hangman
+
+    // ===== ตัวแปรสำหรับจัดการส่วนต่าง ๆ ของหน้าจอ =====
+    private javax.swing.JLabel lblScoreText; // ป้ายแสดงตัวเลขคะแนนสะสม
+
+    // ===== ตัวสร้างหน้าจอเมื่อชนะเกม =====
+    // ตั้งค่าหน้าจอ ปุ่มกด และตำแหน่งของตัวเลขคะแนน
     public Win() {
         initComponents();
         setResizable(false);
@@ -33,24 +33,25 @@ public class Win extends javax.swing.JFrame {
         lblScoreText.setForeground(new java.awt.Color(80, 40, 10));
         lblScoreText.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 36));
 
-        // วางทับลงบนตำแหน่งกรอบว่างของป้าย (ในหน้า Win ป้ายอยู่ที่ x=505, y=540)
-        // ถ้าในหน้า Lose ปรับตัวเลข x, y ไว้เท่าไหร่ เอาเลขเดียวกันมาใส่ตรงนี้ได้เลยครับ
+        // วางทับลงบนตำแหน่งกรอบว่างของป้ายคะแนน
         getContentPane().add(lblScoreText, new org.netbeans.lib.awtextra.AbsoluteConstraints(525, 610, 280, 80), 0);
     }
 
-    // Constructor สำหรับรับข้อมูลจากหน้า GamePlayUI ตอนชนะ
+    // ตัวสร้างหน้าจอเมื่อรับข้อมูลผู้เล่นและเกมมาจากหน้า GamePlayUI ตอนชนะ
     public Win(Player player, HangmanGame game) {
-        this(); // เรียก Constructor ด้านบนเพื่อตั้งค่าหน้าจอ
+        this();
         this.player = player;
         this.game = game;
 
-        // ดึงคะแนนสะสมของผู้เล่นมาแสดงที่ป้าย SCORE
+        // ดึงคะแนนสะสมของผู้เล่นมาแสดงที่ป้ายคะแนน
         int totalScore = (player != null) ? player.getScore() : 0;
         lblScoreText.setText(String.valueOf(totalScore));
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // ===== ส่วนสร้างและจัดวางองค์ประกอบ GUI =====
+    // โค้ดส่วนนี้สร้างปุ่ม รูปภาพ และตำแหน่งขององค์ประกอบต่าง ๆ
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         WBacktostart = new javax.swing.JButton();
@@ -63,32 +64,33 @@ public class Win extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1280, 750));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        WBacktostart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Back to Start Label.png"))); // NOI18N
+        WBacktostart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Back to Start Label.png")));
         WBacktostart.setBorderPainted(false);
         WBacktostart.setContentAreaFilled(false);
         WBacktostart.addActionListener(this::WBacktostartActionPerformed);
         getContentPane().add(WBacktostart, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 480, -1, -1));
 
-        WNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Next.png"))); // NOI18N
+        WNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Next.png")));
         WNext.setBorderPainted(false);
         WNext.setContentAreaFilled(false);
         WNext.addActionListener(this::WNextActionPerformed);
         getContentPane().add(WNext, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 480, -1, -1));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/You win.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/You win.png")));
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 200, -1, -1));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/ScoreBoard.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/ScoreBoard.png")));
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(505, 540, -1, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/mainmenu.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/mainmenu.png")));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 720));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    // ปุ่ม BACK TO START -> บันทึกคะแนนสะสม แล้วกลับไปหน้า HomeUI
-    private void WBacktostartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WBacktostartActionPerformed
+    // ===== เหตุการณ์เมื่อกดปุ่มกลับหน้าแรก (BACK TO START) =====
+    // บันทึกคะแนนสะสมลงตารางคะแนน แล้วกลับไปยังหน้า HomeUI
+    private void WBacktostartActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_WBacktostartActionPerformed
         if (player != null && game != null && player.getScore() > 0) {
             try {
                 AppServices.leaderboard().save(player, game.getDifficulty());
@@ -99,10 +101,12 @@ public class Win extends javax.swing.JFrame {
         HomeUI home = new HomeUI();
         home.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_WBacktostartActionPerformed
+    }// GEN-LAST:event_WBacktostartActionPerformed
 
-    // ปุ่ม NEXT -> ไปเล่นคำศัพท์คำต่อไป โดยใช้ player คนเดิม (คะแนนสะสมต่อเนื่อง)
-    private void WNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WNextActionPerformed
+    // ===== เหตุการณ์เมื่อกดปุ่มถัดไป (NEXT) =====
+    // สุ่มคำศัพท์คำต่อไปในระดับความยากเดิม
+    // โดยใช้ข้อมูลผู้เล่นคนเดิมเพื่อสะสมคะแนนต่อ
+    private void WNextActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_WNextActionPerformed
         if (game != null) {
             HangmanGame nextGame = AppServices.game().nextGame(game.getDifficulty(), game.getAnswer());
             GamePlayUI nextPlay = new GamePlayUI(player, nextGame);
@@ -112,23 +116,9 @@ public class Win extends javax.swing.JFrame {
             new HomeUI().setVisible(true);
             this.dispose();
         }
-    }//GEN-LAST:event_WNextActionPerformed
+    }// GEN-LAST:event_WNextActionPerformed
 
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        java.awt.EventQueue.invokeLater(() -> new Win().setVisible(true));
-    }
-
+    // ===== ประกาศตัวแปรขององค์ประกอบ GUI =====
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton WBacktostart;
     private javax.swing.JButton WNext;
