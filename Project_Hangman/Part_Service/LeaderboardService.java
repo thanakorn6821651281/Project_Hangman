@@ -3,7 +3,7 @@ import Domain.Difficulty;
 import Domain.Player;
 import Part_Data.ScoreRepository;
 import java.util.List;
-
+    // ===== คลาส LeaderboardService ใช้จัดการกระดานคะแนน โดยใช้ ScoreRepository เพื่อบันทึกและโหลดคะแนน =====
 public class LeaderboardService {
     private final ScoreRepository repository;
     public LeaderboardService(ScoreRepository repository){ this.repository=repository; }

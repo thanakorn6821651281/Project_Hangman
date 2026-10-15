@@ -1,4 +1,5 @@
 package Domain;
+    // ===== คลาส Player ใช้เก็บข้อมูลผู้เล่น โดยมีชื่อและคะแนน =====
 public class Player {
     private final String name;
     private int score;

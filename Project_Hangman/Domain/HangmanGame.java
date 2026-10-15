@@ -1,7 +1,7 @@
 package Domain;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+    // ===== คลาส HangmanGame ใช้จัดการเกม Hangman โดยเก็บคำศัพท์ ระดับความยาก ตัวอักษรที่เดาแล้ว และจำนวนครั้งที่เดาผิด =====
 public class HangmanGame {
     private final Word word; // คำศัพท์ที่ใช้เล่นเกม
     private final Difficulty difficulty; // ระดับความยากของเกม

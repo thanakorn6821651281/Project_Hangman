@@ -6,7 +6,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
-
+    // ===== คลาส CsvWordRepository ใช้จัดการคำศัพท์ โดยเก็บข้อมูลในไฟล์ CSV =====
 public class CsvWordRepository implements WordRepository {
     private final Path dataDir; //ทำหน้าที่เก็บไฟล์ CSV
     public CsvWordRepository(Path dataDir) { this.dataDir = dataDir; } //กำหนดโฟลเดอร์ที่เก็บไฟล์ CSV

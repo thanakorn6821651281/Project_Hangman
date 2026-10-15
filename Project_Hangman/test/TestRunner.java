@@ -37,9 +37,9 @@ public class TestRunner {
     private static Path findWordsDataDir() {
         // รายชื่อตำแหน่งที่อาจมีโฟลเดอร์ data/words
         Path[] candidates = new Path[] {
-            Paths.get("data", "words"),
-            Paths.get("HangmanSC_FINAL_JAVA8_FIXED2", "data", "words"),
-            Paths.get("..", "data", "words")
+                Paths.get("data", "words"),
+                Paths.get("HangmanSC_FINAL_JAVA8_FIXED2", "data", "words"),
+                Paths.get("..", "data", "words")
         };
 
         // ตรวจสอบทีละตำแหน่ง ถ้าพบไฟล์คำศัพท์ครบก็ส่งคืนตำแหน่งนั้น
@@ -49,7 +49,8 @@ public class TestRunner {
             }
         }
 
-        // หากไม่พบโฟลเดอร์ที่มีไฟล์คำศัพท์ครบ ให้แจ้งข้อผิดพลาดพร้อมตำแหน่งที่โปรแกรมกำลังทำงาน
+        // หากไม่พบโฟลเดอร์ที่มีไฟล์คำศัพท์ครบ
+        // ให้แจ้งข้อผิดพลาดพร้อมตำแหน่งที่โปรแกรมกำลังทำงาน
         throw new IllegalStateException(
                 "Cannot find valid data/words directory from the current working directory: "
                         + Paths.get("").toAbsolutePath().normalize());
@@ -92,7 +93,9 @@ public class TestRunner {
         g.guess('B');
         g.guess('D');
         g.guess('E');
-        g.guess('F');
+        g.guess('O');
+        g.guess('Q');
+        g.guess('J');
         check("lose", g.getStatus() == GameStatus.LOST);
 
         // สร้างตัวอ่านข้อมูลคำศัพท์ โดยค้นหาตำแหน่งโฟลเดอร์ข้อมูลจากเมธอดด้านบน

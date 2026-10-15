@@ -4,13 +4,13 @@ import Domain.Difficulty;
 import Domain.GameStatus;
 import Domain.HangmanGame;
 import Domain.Word;
-
+    // ===== คลาส GameService ใช้จัดการเกม Hangman โดยใช้ WordService เพื่อดึงคำศัพท์และคำนวณคะแนน =====
 public class GameService {
     private final WordService wordService;
 
     public GameService(WordService wordService) { this.wordService = wordService; }
 
-    //// ===== สร้างเกมใหม่ =====
+    // ===== สร้างเกมใหม่ =====
     public HangmanGame newGame(Difficulty difficulty) {
         Word word = wordService.randomWord(difficulty);
         return new HangmanGame(word, difficulty);
