@@ -436,7 +436,7 @@ public class GamePlayUI extends javax.swing.JFrame {
         }
     }
 
-    private void finishGame() {
+   private void finishGame() {
 
         // 1. บันทึกคะแนนสะสมลงไฟล์ของระดับที่เล่น
         if (player != null) {
@@ -447,7 +447,13 @@ public class GamePlayUI extends javax.swing.JFrame {
             }
         }
 
-        // 2. เปลี่ยนไปหน้า Lose พร้อมส่งข้อมูล player และ game ไปด้วย
+        // 2. เด้ง Popup แสดงคำเฉลยก่อน (โปรแกรมจะรอจนกว่าผู้เล่นจะกด OK)
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "The word was: " + game.getAnswer(),
+                "Game Over",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        // 3. พอกด OK แล้ว ค่อยเปลี่ยนไปหน้า Lose
         Lose loseScreen = new Lose(player, game);
         loseScreen.setVisible(true);
         this.dispose();
